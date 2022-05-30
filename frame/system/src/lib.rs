@@ -1289,7 +1289,7 @@ impl<T: Config> Pallet<T> {
 		let parent_hash = <ParentHash<T>>::get();
 		let digest = <Digest<T>>::get();
 
-		let extrinsics = (0..ExtrinsicCount::<T>::take().unwrap_or_default())
+		let extrinsics = (0..ExtrinsicCount::<T>::take().unwrap_or_default()).rev()
 			.map(ExtrinsicData::<T>::take)
 			.collect();
 		let extrinsics_root = extrinsics_data_root::<T::Hashing>(extrinsics);
