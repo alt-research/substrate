@@ -26,5 +26,5 @@ sp-storage = { version = "6.0.0", path = "../../../../primitives/storage" }
 [dev-dependencies]
 scale-info = "2.1.1"
 jsonrpsee = { version = "0.13.0", features = ["ws-client", "jsonrpsee-types"] }
-tokio = "1.17.0"
+tokio = "1.19.2"
 frame-system = { version = "4.0.0-dev", path = "../../../../frame/system" }
