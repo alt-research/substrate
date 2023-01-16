@@ -1410,4 +1410,50 @@ mod tests {
 
 		runtime_api.test_witness(&block_id, proof, root).unwrap();
 	}
+
+	#[test]
+	fn test_trie() {
+		use sp_core::{hexdisplay::HexDisplay, Hasher};
+		use sp_trie::TrieMut;
+		use sp_runtime::traits::Keccak256;
+
+		// type Hash = crate::Hashing;
+		type Hashing = Keccak256;
+
+		// 1. insert key/values and generate root
+		let (root, mdb) = {
+			let mut mdb = sp_trie::MemoryDB::<Hashing>::default();
+			let mut root = <Hashing as Hasher>::Out::default();
+			let mut trie =
+				sp_trie::trie_types::TrieDBMutBuilderV1::new(&mut mdb, &mut root).build();
+
+			// trie.insert(b"123", b"123").expect("");
+
+			let r = *trie.root();
+			drop(trie);
+			println!("{:?}", r);
+			(r, mdb)
+		};
+
+		// 2. generate proof
+		let proof = {
+			let backend =
+				sp_state_machine::TrieBackendBuilder::<_, Hashing>::new(mdb, root).build();
+
+			let proof = sp_state_machine::prove_read(backend, [b"123"]).expect("");
+			let s = proof.iter_nodes().map(|a| HexDisplay::from(a)).collect::<Vec<_>>();
+			println!("proof {:?}", s);
+			proof
+		};
+
+		// 3. verify proof
+		{
+			// let db = proof.into_memory_db::<Hashing>();
+			// if !db.contains(&root, EMPTY_PREFIX) {
+			// 	panic!("root dismatch")
+			// }
+			// let trie_backend = sp_state_machine::TrieBackend::new(db, root);
+		}
+
+	}
 }
