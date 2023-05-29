@@ -48,7 +48,7 @@ zstd = { version = "0.12.3", default-features = false }
 assert_cmd = "2.0.10"
 regex = "1.7.3"
 substrate-cli-test-utils = { path = "../../../../test-utils/cli" }
-tokio = "1.27.0"
+tokio = "1.28.2"
 
 [features]
 try-runtime = ["sp-debug-derive/force-debug", "frame-try-runtime/try-runtime"]
